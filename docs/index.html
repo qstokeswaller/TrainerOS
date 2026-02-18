@@ -5725,94 +5725,101 @@
 
                 return (
                     <div className="space-y-4 animate-in fade-in duration-500 h-[calc(100vh-140px)] flex flex-col">
-                        {/* Fixed Header Section (No longer sticky relative to page, but static in flex container) */}
-                        <div className="bg-slate-50 pb-2 shrink-0">
-                            {/* Header with Integrated Toggle */}
-                            <div className="flex flex-col md:flex-row justify-between items-start md:items-center bg-slate-100 p-4 rounded-t-xl border-b border-slate-200 gap-4">
-                                <div className="flex items-center gap-6">
-                                    <div className="flex items-center gap-2">
-                                        <h2 className="text-xl font-bold text-slate-800">Master Database</h2>
-                                        <ChevronDownIcon size={20} className="text-slate-800" />
-                                    </div>
-                                    <div className="flex bg-slate-200/50 p-1 rounded-xl">
-                                        <button
-                                            onClick={() => { setLibraryViewMode('exercises'); setLibraryPage(1); }}
-                                            className={`px-4 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all ${libraryViewMode === 'exercises' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
-                                        >
-                                            Exercises
-                                        </button>
-                                        <button
-                                            onClick={() => setLibraryViewMode('protocols')}
-                                            className={`px-4 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all ${libraryViewMode === 'protocols' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
-                                        >
-                                            Protocols
-                                        </button>
-                                    </div>
-                                </div>
-                                <div className="flex flex-wrap items-center gap-3">
-                                    {/* NEW: Alphabet Jump Filter */}
-                                    {libraryViewMode === 'exercises' && (
-                                        <div className="flex items-center gap-2 bg-white rounded-xl p-2 border border-slate-200 shadow-sm relative group">
-                                            <span className="text-[10px] font-black uppercase text-slate-400 tracking-widest pl-2">Jump</span>
-                                            <div className="h-4 w-px bg-slate-200 mx-1"></div>
-                                            <select
-                                                onChange={(e) => {
-                                                    const letter = e.target.value;
-                                                    if (letter === '') return;
-                                                    const targetIndex = filtered.findIndex(ex => ex.name.toUpperCase().startsWith(letter));
-                                                    if (targetIndex !== -1) {
-                                                        const newPage = Math.ceil((targetIndex + 1) / ITEMS_PER_PAGE);
-                                                        setLibraryPage(newPage);
-                                                    }
-                                                }}
-                                                className="bg-transparent text-xs font-bold text-slate-700 outline-none appearance-none pr-8 cursor-pointer uppercase tracking-tight max-w-[60px]"
-                                                defaultValue=""
-                                            >
-                                                <option value="">-</option>
-                                                {'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map(char => (
-                                                    <option key={char} value={char}>{char}</option>
-                                                ))}
-                                            </select>
-                                            <ChevronDownIcon size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                        <div className="bg-white p-6 rounded-t-[3rem] border-b border-slate-100 shrink-0">
+                            <div className="flex flex-col gap-4">
+                                {/* Row 1: Title Group & Filter Group (Aligned) */}
+                                <div className="flex flex-col xl:flex-row justify-between items-center gap-6">
+                                    <div className="flex items-center gap-6">
+                                        <div className="w-12 h-12 bg-slate-900 rounded-2xl flex items-center justify-center text-white shadow-xl shrink-0 rotate-3">
+                                            <DumbbellIcon size={24} />
                                         </div>
-                                    )}
-
-                                    {/* Category Filter */}
-                                    <div className="flex items-center gap-2 bg-white rounded-xl p-2 border border-slate-200 shadow-sm relative group">
-                                        <span className="text-[10px] font-black uppercase text-slate-400 tracking-widest pl-2">Category</span>
-                                        <div className="h-4 w-px bg-slate-200 mx-1"></div>
-                                        <select
-                                            value={selectedCategory}
-                                            onChange={(e) => { setSelectedCategory(e.target.value); setLibraryPage(1); }}
-                                            className="bg-transparent text-xs font-bold text-slate-700 outline-none appearance-none pr-8 cursor-pointer uppercase tracking-tight max-w-[100px]"
-                                        >
-                                            <option value="All">All</option>
-                                            {(libraryViewMode === 'exercises' ? exerciseCategories : PROTOCOL_CATEGORIES).map(cat => (
-                                                <option key={cat} value={cat}>{cat}</option>
-                                            ))}
-                                        </select>
-                                        <ChevronDownIcon size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                                        <div className="flex items-center gap-5">
+                                            <h2 className="text-xl font-black text-slate-800 uppercase tracking-tight leading-none">Master Database</h2>
+                                            <div className="flex bg-slate-100 p-1 rounded-xl w-fit border border-slate-200/50 shadow-inner">
+                                                <button
+                                                    onClick={() => { setLibraryViewMode('exercises'); setLibraryPage(1); }}
+                                                    className={`px-4 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all ${libraryViewMode === 'exercises' ? 'bg-white text-slate-900 shadow-md' : 'text-slate-400 hover:text-slate-600'}`}
+                                                >
+                                                    Exercises
+                                                </button>
+                                                <button
+                                                    onClick={() => setLibraryViewMode('protocols')}
+                                                    className={`px-4 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all ${libraryViewMode === 'protocols' ? 'bg-white text-indigo-600 shadow-md' : 'text-slate-400 hover:text-slate-600'}`}
+                                                >
+                                                    Protocols
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
 
-                                    {/* Muscle Filter */}
-                                    {libraryViewMode === 'exercises' && (
-                                        <div className="flex items-center gap-2 bg-white rounded-xl p-2 border border-slate-200 shadow-sm relative group">
-                                            <span className="text-[10px] font-black uppercase text-slate-400 tracking-widest pl-2">Target Muscle</span>
-                                            <div className="h-4 w-px bg-slate-200 mx-1"></div>
+                                    <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5">
+                                        {/* Alphabet Jump Filter */}
+                                        {libraryViewMode === 'exercises' && (
+                                            <div className="flex items-center gap-2 bg-slate-50 rounded-xl p-2 border border-slate-200/60 shadow-sm relative group shrink-0">
+                                                <span className="text-[9px] font-black uppercase text-slate-400 tracking-widest pl-2">Jump</span>
+                                                <div className="h-3 w-px bg-slate-200 mx-1"></div>
+                                                <select
+                                                    onChange={(e) => {
+                                                        const letter = e.target.value;
+                                                        if (letter === '') return;
+                                                        const targetIndex = filtered.findIndex(ex => ex.name.toUpperCase().startsWith(letter));
+                                                        if (targetIndex !== -1) {
+                                                            const newPage = Math.ceil((targetIndex + 1) / ITEMS_PER_PAGE);
+                                                            setLibraryPage(newPage);
+                                                        }
+                                                    }}
+                                                    className="bg-transparent text-[11px] font-bold text-slate-700 outline-none appearance-none pr-6 cursor-pointer uppercase tracking-tight"
+                                                    defaultValue=""
+                                                >
+                                                    <option value="">-</option>
+                                                    {'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map(char => (
+                                                        <option key={char} value={char}>{char}</option>
+                                                    ))}
+                                                </select>
+                                                <ChevronDownIcon size={12} className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                                            </div>
+                                        )}
+
+                                        {/* Category Filter */}
+                                        <div className="flex items-center gap-2 bg-slate-50 rounded-xl p-2 border border-slate-200/60 shadow-sm relative group shrink-0">
+                                            <span className="text-[9px] font-black uppercase text-slate-400 tracking-widest pl-2">Category</span>
+                                            <div className="h-3 w-px bg-slate-200 mx-1"></div>
                                             <select
-                                                value={selectedMuscleGroup}
-                                                onChange={(e) => { setSelectedMuscleGroup(e.target.value); setLibraryPage(1); }}
-                                                className="bg-transparent text-xs font-bold text-slate-700 outline-none appearance-none pr-8 cursor-pointer uppercase tracking-tight max-w-[100px]"
+                                                value={selectedCategory}
+                                                onChange={(e) => { setSelectedCategory(e.target.value); setLibraryPage(1); }}
+                                                className="bg-transparent text-[11px] font-bold text-slate-700 outline-none appearance-none pr-6 cursor-pointer uppercase tracking-tight min-w-[80px]"
                                             >
                                                 <option value="All">All</option>
-                                                {MUSCLE_GROUPS.map(m => (
-                                                    <option key={m} value={m}>{m}</option>
+                                                {(libraryViewMode === 'exercises' ? exerciseCategories : PROTOCOL_CATEGORIES).map(cat => (
+                                                    <option key={cat} value={cat}>{cat}</option>
                                                 ))}
                                             </select>
-                                            <ChevronDownIcon size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                                            <ChevronDownIcon size={12} className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
                                         </div>
-                                    )}
 
+                                        {/* Muscle Filter */}
+                                        {libraryViewMode === 'exercises' && (
+                                            <div className="flex items-center gap-2 bg-slate-50 rounded-xl p-2 border border-slate-200/60 shadow-sm relative group shrink-0">
+                                                <span className="text-[9px] font-black uppercase text-slate-400 tracking-widest pl-2">Muscle</span>
+                                                <div className="h-3 w-px bg-slate-200 mx-1"></div>
+                                                <select
+                                                    value={selectedMuscleGroup}
+                                                    onChange={(e) => { setSelectedMuscleGroup(e.target.value); setLibraryPage(1); }}
+                                                    className="bg-transparent text-[11px] font-bold text-slate-700 outline-none appearance-none pr-6 cursor-pointer uppercase tracking-tight min-w-[80px]"
+                                                >
+                                                    <option value="All">All</option>
+                                                    {MUSCLE_GROUPS.map(m => (
+                                                        <option key={m} value={m}>{m}</option>
+                                                    ))}
+                                                </select>
+                                                <ChevronDownIcon size={12} className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+
+                                {/* Row 2: Action Button (Right Aligned) */}
+                                <div className="flex justify-end">
                                     <button
                                         onClick={() => {
                                             if (libraryViewMode === 'exercises') {
@@ -5837,149 +5844,152 @@
                                                 setIsProtocolModalOpen(true);
                                             }
                                         }}
-                                        className="bg-slate-900 text-white px-4 py-2 rounded-lg text-[10px] font-bold uppercase tracking-widest shadow-lg flex items-center gap-2 active:scale-95 transition-all hover:bg-black"
+                                        className="bg-slate-900 text-white px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg flex items-center gap-2 active:scale-95 transition-all hover:bg-black"
                                     >
-                                        <PlusIcon size={14} /> {libraryViewMode === 'exercises' ? 'Add' : 'New'}
+                                        <PlusIcon size={14} /> {libraryViewMode === 'exercises' ? 'Add Exercise' : 'New Protocol'}
                                     </button>
                                 </div>
                             </div>
 
-                            {/* Search Bar Block (Moved Inside Sticky Wrapper) */}
-                            {libraryViewMode === 'exercises' && (
-                                <div className="bg-white p-3 rounded-xl border border-slate-200 shadow-sm flex items-center gap-4 mx-1 mb-4">
-                                    <SearchIcon size={18} className="text-slate-400 ml-2" />
-                                    <input
-                                        type="text"
-                                        placeholder="Search for Exercise..."
-                                        value={librarySearch}
-                                        onChange={(e) => { setLibrarySearch(e.target.value); setLibraryPage(1); }}
-                                        className="flex-1 bg-transparent text-sm font-medium outline-none text-slate-900 placeholder:text-slate-300"
-                                    />
-                                    <div className="text-xs font-bold text-slate-400 mr-2 border-l border-slate-200 pl-4 h-6 flex items-center">
-                                        {filtered.length} Results
-                                    </div>
-                                </div>
-                            )}
                         </div>
 
-                        {libraryViewMode === 'protocols' ? renderProtocolTable() : (
-                            <>
-                                {/* Table Layout */}
-                                <div className="bg-slate-100/50 rounded-xl overflow-hidden border border-slate-200 mx-1 flex flex-col flex-1 min-h-0">
-                                    <div className="overflow-y-auto flex-1 custom-scrollbar">
-                                        <table className="w-full text-left border-collapse relative">
-                                            <thead className="sticky top-0 z-20 shadow-sm bg-slate-100">
-                                                <tr className="border-b border-slate-300">
-                                                    <th className="p-4 text-[11px] font-black uppercase tracking-widest text-slate-600 bg-slate-100 w-1/3">Exercise Name</th>
-                                                    <th className="p-4 text-[11px] font-black uppercase tracking-widest text-slate-600 text-center bg-slate-100">Target Muscle</th>
-                                                    <th className="p-4 text-[11px] font-black uppercase tracking-widest text-slate-600 text-center bg-slate-100">Category</th>
-                                                    <th className="p-4 text-[11px] font-black uppercase tracking-widest text-slate-600 text-center bg-slate-100">Info</th>
-                                                    <th className="p-4 text-[11px] font-black uppercase tracking-widest text-slate-600 text-center w-40 bg-slate-100">Manage</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody className="divide-y divide-slate-200 bg-white">
-                                                {paginatedExercises.map(ex => (
-                                                    <tr key={ex.id} className="group hover:bg-slate-50 transition-colors">
-                                                        <td className="p-4">
-                                                            <div className="font-bold text-slate-700 text-sm group-hover:text-indigo-900">{ex.name}</div>
-                                                        </td>
-                                                        <td className="p-4 text-center">
-                                                            <span className="inline-block px-2.5 py-1 rounded bg-slate-100 text-[10px] font-bold text-slate-500 border border-slate-200">
-                                                                {ex.muscleGroup || 'General'}
-                                                            </span>
-                                                        </td>
-                                                        <td className="p-4 text-center">
-                                                            <div className="flex flex-wrap justify-center gap-1.5">
-                                                                {ex.categories && ex.categories.length > 0 ? (
-                                                                    <>
-                                                                        <span className="inline-block px-2.5 py-0.5 rounded-full bg-indigo-50 text-[9px] font-black text-indigo-500 border border-indigo-100 uppercase tracking-widest">
-                                                                            {ex.categories[0]}
-                                                                        </span>
-                                                                        {ex.categories[1] && (
-                                                                            <span className="inline-block px-2.5 py-0.5 rounded-full bg-slate-50 text-[9px] font-black text-slate-400 border border-slate-200 uppercase tracking-widest">
-                                                                                {ex.categories[1]}
-                                                                            </span>
-                                                                        )}
-                                                                    </>
-                                                                ) : (
-                                                                    <span className="text-slate-300 text-[10px] font-medium italic">Uncategorized</span>
-                                                                )}
-                                                            </div>
-                                                        </td>
-                                                        <td className="p-4 text-center">
-                                                            <div className="flex items-center justify-center gap-2">
-                                                                {ex.videoUrl ? (
-                                                                    <a href={ex.videoUrl} target="_blank" title="Watch Video" className="w-7 h-7 rounded-lg bg-red-400 text-white flex items-center justify-center hover:bg-red-500 shadow-sm hover:shadow-md transition-all ring-1 ring-red-200">
-                                                                        <PlayCircleIcon size={14} fill="currentColor" className="text-white" />
-                                                                    </a>
-                                                                ) : (
-                                                                    <div className="w-7 h-7 rounded-lg bg-slate-100 text-slate-300 flex items-center justify-center cursor-not-allowed">
-                                                                        <VideoOffIcon size={14} />
-                                                                    </div>
-                                                                )}
-                                                                <button onClick={() => { setViewingExerciseInfo(ex); setIsExerciseInfoModalOpen(true); }} title="Exercise Info" className="w-7 h-7 rounded-lg bg-cyan-400 text-white flex items-center justify-center hover:bg-cyan-500 shadow-sm hover:shadow-md transition-all ring-1 ring-cyan-200">
-                                                                    <InfoIcon size={14} />
-                                                                </button>
-                                                            </div>
-                                                        </td>
-                                                        <td className="p-4 text-center">
-                                                            <div className="flex items-center justify-center gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
-                                                                <button onClick={() => {
-                                                                    setEditingExercise(ex);
-                                                                    setNewExercise({
-                                                                        name: ex.name,
-                                                                        bodyRegion: ex.bodyRegion || (ex.categories ? ex.categories[0] : 'Unsorted'),
-                                                                        classification: ex.classification || (ex.categories ? ex.categories[1] : 'Unsorted'),
-                                                                        posture: ex.posture || 'Unsorted',
-                                                                        grip: ex.grip || 'Unsorted',
-                                                                        mechanics: ex.mechanics || 'Unsorted',
-                                                                        execution: ex.execution || (ex.alternating ? 'Alternating' : 'Unsorted'),
-                                                                        primaryEquipment: ex.primaryEquipment || (ex.equipment && ex.equipment.length > 0 ? ex.equipment[0] : 'Unsorted'),
-                                                                        targetMuscle: ex.targetMuscle || ex.muscleGroup || 'Unsorted',
-                                                                        videoUrl: ex.videoUrl || '',
-                                                                        description: ex.description || ''
-                                                                    });
-                                                                    setIsEditLiftModalOpen(true);
-                                                                }} className="p-1.5 rounded-lg bg-blue-50 text-blue-500 hover:bg-blue-500 hover:text-white transition-all border border-blue-100 shadow-sm" title="Edit">
-                                                                    <PencilIcon size={14} />
-                                                                </button>
-                                                                <button onClick={() => { setDeletingExercise(ex); setIsDeleteConfirmModalOpen(true); }} className="p-1.5 rounded-lg bg-red-50 text-red-500 hover:bg-red-500 hover:text-white transition-all border border-red-100 shadow-sm" title="Delete">
-                                                                    <Trash2Icon size={14} />
-                                                                </button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                ))}
-                                            </tbody>
-                                        </table>
-                                    </div>
+                        {/* Search Bar Block (Moved Inside Sticky Wrapper) */}
+                        {libraryViewMode === 'exercises' && (
+                            <div className="bg-white p-3 rounded-xl border border-slate-200 shadow-sm flex items-center gap-4 mx-1 mb-4">
+                                <SearchIcon size={18} className="text-slate-400 ml-2" />
+                                <input
+                                    type="text"
+                                    placeholder="Search for Exercise..."
+                                    value={librarySearch}
+                                    onChange={(e) => { setLibrarySearch(e.target.value); setLibraryPage(1); }}
+                                    className="flex-1 bg-transparent text-sm font-medium outline-none text-slate-900 placeholder:text-slate-300"
+                                />
+                                <div className="text-xs font-bold text-slate-400 mr-2 border-l border-slate-200 pl-4 h-6 flex items-center">
+                                    {filtered.length} Results
                                 </div>
-
-                                {/* Pagination Controls */}
-                                {totalPages > 1 && (
-                                    <div className="flex items-center justify-center gap-4 mb-24 animate-in fade-in">
-                                        <button
-                                            onClick={() => setLibraryPage(p => Math.max(1, p - 1))}
-                                            disabled={libraryPage === 1}
-                                            className="p-3 rounded-xl bg-white border border-slate-200 text-slate-500 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-50 transition-colors"
-                                        >
-                                            <ChevronLeftIcon size={16} />
-                                        </button>
-                                        <span className="text-xs font-black uppercase tracking-widest text-slate-400">
-                                            Page <span className="text-indigo-600">{libraryPage}</span> of {totalPages}
-                                        </span>
-                                        <button
-                                            onClick={() => setLibraryPage(p => Math.min(totalPages, p + 1))}
-                                            disabled={libraryPage === totalPages}
-                                            className="p-3 rounded-xl bg-white border border-slate-200 text-slate-500 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-50 transition-colors"
-                                        >
-                                            <ChevronRightIcon size={16} />
-                                        </button>
-                                    </div>
-                                )}
-                            </>
+                            </div>
                         )}
-                    </div>
+
+                        {
+                            libraryViewMode === 'protocols' ? renderProtocolTable() : (
+                                <>
+                                    {/* Table Layout */}
+                                    <div className="bg-slate-100/50 rounded-xl overflow-hidden border border-slate-200 mx-1 flex flex-col flex-1 min-h-0">
+                                        <div className="overflow-y-auto flex-1 custom-scrollbar">
+                                            <table className="w-full text-left border-collapse relative">
+                                                <thead className="sticky top-0 z-20 shadow-sm bg-slate-100">
+                                                    <tr className="border-b border-slate-300">
+                                                        <th className="p-4 text-[11px] font-black uppercase tracking-widest text-slate-600 bg-slate-100 w-1/3">Exercise Name</th>
+                                                        <th className="p-4 text-[11px] font-black uppercase tracking-widest text-slate-600 text-center bg-slate-100">Target Muscle</th>
+                                                        <th className="p-4 text-[11px] font-black uppercase tracking-widest text-slate-600 text-center bg-slate-100">Category</th>
+                                                        <th className="p-4 text-[11px] font-black uppercase tracking-widest text-slate-600 text-center bg-slate-100">Info</th>
+                                                        <th className="p-4 text-[11px] font-black uppercase tracking-widest text-slate-600 text-center w-40 bg-slate-100">Manage</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody className="divide-y divide-slate-200 bg-white">
+                                                    {paginatedExercises.map(ex => (
+                                                        <tr key={ex.id} className="group hover:bg-slate-50 transition-colors">
+                                                            <td className="p-4">
+                                                                <div className="font-bold text-slate-700 text-sm group-hover:text-indigo-900">{ex.name}</div>
+                                                            </td>
+                                                            <td className="p-4 text-center">
+                                                                <span className="inline-block px-2.5 py-1 rounded bg-slate-100 text-[10px] font-bold text-slate-500 border border-slate-200">
+                                                                    {ex.muscleGroup || 'General'}
+                                                                </span>
+                                                            </td>
+                                                            <td className="p-4 text-center">
+                                                                <div className="flex flex-wrap justify-center gap-1.5">
+                                                                    {ex.categories && ex.categories.length > 0 ? (
+                                                                        <>
+                                                                            <span className="inline-block px-2.5 py-0.5 rounded-full bg-indigo-50 text-[9px] font-black text-indigo-500 border border-indigo-100 uppercase tracking-widest">
+                                                                                {ex.categories[0]}
+                                                                            </span>
+                                                                            {ex.categories[1] && (
+                                                                                <span className="inline-block px-2.5 py-0.5 rounded-full bg-slate-50 text-[9px] font-black text-slate-400 border border-slate-200 uppercase tracking-widest">
+                                                                                    {ex.categories[1]}
+                                                                                </span>
+                                                                            )}
+                                                                        </>
+                                                                    ) : (
+                                                                        <span className="text-slate-300 text-[10px] font-medium italic">Uncategorized</span>
+                                                                    )}
+                                                                </div>
+                                                            </td>
+                                                            <td className="p-4 text-center">
+                                                                <div className="flex items-center justify-center gap-2">
+                                                                    {ex.videoUrl ? (
+                                                                        <a href={ex.videoUrl} target="_blank" title="Watch Video" className="w-7 h-7 rounded-lg bg-red-400 text-white flex items-center justify-center hover:bg-red-500 shadow-sm hover:shadow-md transition-all ring-1 ring-red-200">
+                                                                            <PlayCircleIcon size={14} fill="currentColor" className="text-white" />
+                                                                        </a>
+                                                                    ) : (
+                                                                        <div className="w-7 h-7 rounded-lg bg-slate-100 text-slate-300 flex items-center justify-center cursor-not-allowed">
+                                                                            <VideoOffIcon size={14} />
+                                                                        </div>
+                                                                    )}
+                                                                    <button onClick={() => { setViewingExerciseInfo(ex); setIsExerciseInfoModalOpen(true); }} title="Exercise Info" className="w-7 h-7 rounded-lg bg-cyan-400 text-white flex items-center justify-center hover:bg-cyan-500 shadow-sm hover:shadow-md transition-all ring-1 ring-cyan-200">
+                                                                        <InfoIcon size={14} />
+                                                                    </button>
+                                                                </div>
+                                                            </td>
+                                                            <td className="p-4 text-center">
+                                                                <div className="flex items-center justify-center gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
+                                                                    <button onClick={() => {
+                                                                        setEditingExercise(ex);
+                                                                        setNewExercise({
+                                                                            name: ex.name,
+                                                                            bodyRegion: ex.bodyRegion || (ex.categories ? ex.categories[0] : 'Unsorted'),
+                                                                            classification: ex.classification || (ex.categories ? ex.categories[1] : 'Unsorted'),
+                                                                            posture: ex.posture || 'Unsorted',
+                                                                            grip: ex.grip || 'Unsorted',
+                                                                            mechanics: ex.mechanics || 'Unsorted',
+                                                                            execution: ex.execution || (ex.alternating ? 'Alternating' : 'Unsorted'),
+                                                                            primaryEquipment: ex.primaryEquipment || (ex.equipment && ex.equipment.length > 0 ? ex.equipment[0] : 'Unsorted'),
+                                                                            targetMuscle: ex.targetMuscle || ex.muscleGroup || 'Unsorted',
+                                                                            videoUrl: ex.videoUrl || '',
+                                                                            description: ex.description || ''
+                                                                        });
+                                                                        setIsEditLiftModalOpen(true);
+                                                                    }} className="p-1.5 rounded-lg bg-blue-50 text-blue-500 hover:bg-blue-500 hover:text-white transition-all border border-blue-100 shadow-sm" title="Edit">
+                                                                        <PencilIcon size={14} />
+                                                                    </button>
+                                                                    <button onClick={() => { setDeletingExercise(ex); setIsDeleteConfirmModalOpen(true); }} className="p-1.5 rounded-lg bg-red-50 text-red-500 hover:bg-red-500 hover:text-white transition-all border border-red-100 shadow-sm" title="Delete">
+                                                                        <Trash2Icon size={14} />
+                                                                    </button>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    {/* Pagination Controls */}
+                                    {totalPages > 1 && (
+                                        <div className="flex items-center justify-center gap-4 mb-24 animate-in fade-in">
+                                            <button
+                                                onClick={() => setLibraryPage(p => Math.max(1, p - 1))}
+                                                disabled={libraryPage === 1}
+                                                className="p-3 rounded-xl bg-white border border-slate-200 text-slate-500 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-50 transition-colors"
+                                            >
+                                                <ChevronLeftIcon size={16} />
+                                            </button>
+                                            <span className="text-xs font-black uppercase tracking-widest text-slate-400">
+                                                Page <span className="text-indigo-600">{libraryPage}</span> of {totalPages}
+                                            </span>
+                                            <button
+                                                onClick={() => setLibraryPage(p => Math.min(totalPages, p + 1))}
+                                                disabled={libraryPage === totalPages}
+                                                className="p-3 rounded-xl bg-white border border-slate-200 text-slate-500 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-50 transition-colors"
+                                            >
+                                                <ChevronRightIcon size={16} />
+                                            </button>
+                                        </div>
+                                    )}
+                                </>
+                            )
+                        }
+                    </div >
                 );
             };
 
@@ -10133,49 +10143,49 @@
                             className="bg-white rounded-[3.5rem] border border-slate-200 shadow-sm overflow-hidden flex flex-col min-h-[600px]">
                             {/* Calendar Header/Toolbar */}
                             <div
-                                className="p-8 border-b border-slate-100 flex flex-wrap items-center justify-between gap-6 bg-slate-50/30">
-                                <div className="flex items-center gap-6">
-                                    <div
-                                        className="w-14 h-14 bg-slate-900 rounded-2xl flex items-center justify-center text-white shadow-lg shrink-0">
-                                        <CalendarIcon size={28} />
-                                    </div>
-                                    <div>
-                                        <h3
-                                            className="text-3xl font-black uppercase tracking-tighter text-indigo-900 leading-none mb-1">
-                                            {dashboardCalendarDate.toLocaleString('default', { month: 'long', year: 'numeric' })}</h3>
-                                        <div className="flex items-center gap-4">
-                                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                                                Master Schedule // {dashboardFilterTarget}</p>
-                                            <div className="flex items-center gap-1">
+                                className="p-8 border-b border-slate-100 flex flex-col gap-4 bg-white">
+                                {/* Row 1: Calendar Nav & Athlete Filter (Aligned) */}
+                                <div className="flex flex-col xl:flex-row justify-between items-center gap-8">
+                                    <div className="flex items-center gap-6">
+                                        <div
+                                            className="w-12 h-12 bg-slate-900 rounded-2xl flex items-center justify-center text-white shadow-xl shrink-0 -rotate-3">
+                                            <CalendarIcon size={24} />
+                                        </div>
+                                        <div className="flex items-center gap-5">
+                                            <h3
+                                                className="text-2xl font-black uppercase tracking-tight text-indigo-900 leading-none">
+                                                {dashboardCalendarDate.toLocaleString('default', { month: 'long', year: 'numeric' })}</h3>
+
+                                            <div className="flex items-center gap-1.5 bg-slate-100 p-1 rounded-xl border border-slate-200/50 shadow-inner">
                                                 <button onClick={() => {
                                                     const newDate = new Date(dashboardCalendarDate);
                                                     newDate.setMonth(newDate.getMonth() - 1);
                                                     setDashboardCalendarDate(newDate);
                                                 }}
-                                                    className="p-1 hover:bg-slate-200 rounded-full transition-colors"
+                                                    className="p-1 hover:bg-white hover:shadow-sm rounded-lg transition-all"
                                                 >
-                                                    <ChevronLeftIcon size={14} className="text-slate-400" />
+                                                    <ChevronLeftIcon size={16} className="text-slate-600" />
                                                 </button>
                                                 <button onClick={() => {
                                                     const newDate = new Date(dashboardCalendarDate);
                                                     newDate.setMonth(newDate.getMonth() + 1);
                                                     setDashboardCalendarDate(newDate);
                                                 }}
-                                                    className="p-1 hover:bg-slate-200 rounded-full transition-colors"
+                                                    className="p-1 hover:bg-white hover:shadow-sm rounded-lg transition-all"
                                                 >
-                                                    <ChevronRightIcon size={14} className="text-slate-400" />
+                                                    <ChevronRightIcon size={16} className="text-slate-600" />
                                                 </button>
                                             </div>
+                                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.1em] mb-0">
+                                                {dashboardFilterTarget}</p>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div className="flex items-center gap-4">
                                     {/* Filter Dropdown */}
                                     <div
-                                        className="flex items-center gap-2 bg-white rounded-2xl px-4 py-2 border border-slate-200 shadow-sm relative group">
+                                        className="flex items-center gap-2 bg-slate-50 rounded-xl px-4 py-2 border border-slate-200/60 shadow-sm relative group shrink-0">
                                         <FilterIcon size={14} className="text-slate-400" />
-                                        <div className="h-4 w-px bg-slate-200 mx-1"></div>
+                                        <div className="h-3 w-px bg-slate-200 mx-1"></div>
                                         <select value={dashboardFilterTarget} onChange={(e) =>
                                             setDashboardFilterTarget(e.target.value)}
                                             className="bg-transparent text-[10px] font-black uppercase tracking-widest
@@ -10185,16 +10195,19 @@
                                             {teams.flatMap(t => t.players).map(p => <option key={p.id}>{p.name}</option>)}
                                         </select>
                                         <ChevronDownIcon size={12}
-                                            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-300 pointer-events-none group-hover:text-slate-500 transition-colors" />
+                                            className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-300 pointer-events-none group-hover:text-slate-500 transition-colors" />
                                     </div>
+                                </div>
 
+                                {/* Row 2: Add Session Button (Right Aligned) */}
+                                <div className="flex justify-end">
                                     {/* Add Session Button */}
                                     <button onClick={() => {
                                         setNewSession({ ...newSession, date: new Date().toISOString().split('T')[0] });
                                         setIsAddSessionModalOpen(true);
                                     }}
-                                        className="bg-indigo-600 text-white px-6 py-3 rounded-2xl text-[10px] font-black
-                                    uppercase tracking-widest shadow-xl flex items-center gap-2 hover:bg-indigo-700
+                                        className="bg-indigo-600 text-white px-5 py-2.5 rounded-xl text-[10px] font-black
+                                    uppercase tracking-widest shadow-lg flex items-center gap-2 hover:bg-indigo-700
                                     transition-all active:scale-95"
                                     >
                                         <PlusIcon size={14} /> Add Session
